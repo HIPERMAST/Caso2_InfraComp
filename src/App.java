@@ -57,13 +57,6 @@ public class App {
         }
         scanner.close();
 
-        // Print the parameters
-        System.out.println("TP: " + parameters.get("TP"));
-        System.out.println("NF: " + parameters.get("NF"));
-        System.out.println("NC: " + parameters.get("NC"));
-        System.out.println("NR: " + parameters.get("NR"));
-        System.out.println("MP: " + parameters.get("MP"));
-
     } catch (FileNotFoundException e) {
         System.out.println("File not found.");
         e.printStackTrace();
@@ -87,13 +80,25 @@ public class App {
         try {
             Scanner scanner = new Scanner(new File("./data/" + fileName + ".txt"));
     
-            while (scanner.hasNextLine()) {
-                String linea = scanner.nextLine();
-    
+        while (scanner.hasNextLine()) {
+            String linea = scanner.nextLine();
+
+            if (linea.startsWith("TP=")) {
+                parameters.put("TP", Integer.parseInt(linea.substring(3)));
+            } else if (linea.startsWith("NF=")) {
+                parameters.put("NF", Integer.parseInt(linea.substring(3)));
+            } else if (linea.startsWith("NC=")) {
+                parameters.put("NC", Integer.parseInt(linea.substring(3)));
+            } else if (linea.startsWith("NR=")) {
+                parameters.put("NR", Integer.parseInt(linea.substring(3)));
+            } else if (linea.startsWith("MP=")) {
+                parameters.put("MP", Integer.parseInt(linea.substring(3)));
             }
+            else {
+                // TODO: Read the rest of the parameters
+            }
+        }
             scanner.close();
-    
-            // Print the parameters
 
     
         } catch (FileNotFoundException e) {
