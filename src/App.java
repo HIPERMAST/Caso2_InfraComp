@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -17,6 +19,8 @@ public class App {
         if (selectedMode == 1) {
             System.out.println("Modo 1 seleccionado.");
             HashMap<String, Integer> parameters = readFileMode1();
+            References references = new References(parameters.get("TP"), parameters.get("NF"), parameters.get("NC"), parameters.get("NR"));
+            saveReferences(references, parameters.get("NC"));
         } else if (selectedMode == 2) {
             System.out.println("Modo 2 seleccionado.");
             HashMap<String, Integer> parameters = readFileMode2();
@@ -25,6 +29,23 @@ public class App {
         }
 
         mode.close();
+    }
+
+
+    public static void saveReferences(References references, int NC) {
+        String referencesString = references.generateReferences();
+        
+        String fileRoot = "./References/" + NC + ".txt";
+
+        try {
+            File archivo = new File(fileRoot);
+            FileWriter escritor = new FileWriter(archivo);
+            escritor.write(referencesString);
+            escritor.close();
+            System.out.println("Archivo guardado exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al guardar el archivo: " + e.getMessage());
+        }
     }
 
     
@@ -38,7 +59,7 @@ public class App {
     String fileName = sc.nextLine();
 
     try {
-        Scanner scanner = new Scanner(new File("./data/" + fileName + ".txt"));
+        Scanner scanner = new Scanner(new File("./files/" + fileName + ".txt"));
 
         while (scanner.hasNextLine()) {
             String linea = scanner.nextLine();
@@ -78,7 +99,7 @@ public class App {
         String fileName = sc.nextLine();
     
         try {
-            Scanner scanner = new Scanner(new File("./data/" + fileName + ".txt"));
+            Scanner scanner = new Scanner(new File("./files/" + fileName + ".txt"));
     
         while (scanner.hasNextLine()) {
             String linea = scanner.nextLine();
